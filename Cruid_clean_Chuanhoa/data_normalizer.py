@@ -1,32 +1,28 @@
 import pandas as pd
-import warnings
-warnings.filterwarnings('ignore')
 
-# Tải dữ liệu
-df = pd.read_csv('processed_data.csv')
+class Normalizer:
+    def __init__(self, data_frame):
+        """Initialize the Normalizer with the provided DataFrame."""
+        self.data_frame = data_frame
 
-print(df.isnull().sum())
+    def min_max_scale(self, columns):
+        """Normalize specified columns to a range between 0 and 1."""
+        for column in columns:
+            if column in self.data_frame.columns:
+                min_val = self.data_frame[column].min()
+                max_val = self.data_frame[column].max()
+                if max_val != min_val:
+                    self.data_frame[column] = (self.data_frame[column] - min_val) / (max_val - min_val)
+                else:
+                    self.data_frame[column] = 0  # if min and max are the same, set all values to 0
 
-def fill_numerical_na(data, column, method='median'):
-    """Điền giá trị thiếu cho các cột số bằng giá trị trung vị (median) hoặc trung bình (mean)."""
-    if method == 'median':
-        fill_value = data[column].median()
-    elif method == 'mean':
-        fill_value = data[column].mean()
-    data[column].fillna(fill_value, inplace=True)
-    #print(f"Đã điền giá trị thiếu cho {column} bằng {method}.")
-
-def fill_categorical_na(data, column):
-    """Điền giá trị thiếu cho các cột chuỗi bằng mode (giá trị phổ biến nhất)."""
-    fill_value = data[column].mode()[0]
-    data[column].fillna(fill_value, inplace=True)
-    #print(f"Đã điền giá trị thiếu cho {column} bằng giá trị phổ biến nhất.")
-
-# Làm sạch các giá trị thiếu
-fill_numerical_na(df, 'LoanAmount', method='median')
-fill_numerical_na(df, 'Loan_Amount_Term', method='median')
-fill_numerical_na(df, 'Credit_History', method='median')
-
-fill_categorical_na(df, 'Gender')
-fill_categorical_na(df, 'Dependents')
-fill_categorical_na(df, 'Self_Employed')
+    def z_score_standardize(self, columns):
+        """Standardize specified columns to have a mean of 0 and standard deviation of 1."""
+        for column in columns:
+            if column in self.data_frame.columns:
+                mean = self.data_frame[column].mean()
+                std_dev = self.data_frame.column.std()
+                if std_dev != 0:
+                    self.data_frame[column] = (self.data_frame[column] - mean) / std_dev
+                else:
+                    self.data_frame[column] = 0  # if std_dev is 0, set all values to 0
