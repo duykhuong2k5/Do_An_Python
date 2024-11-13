@@ -1,29 +1,13 @@
-from data_handling import load_data, save_data
-from data_cleaning import clean_data
-from data_normalization import normalize_data
-from data_visualization import plot_histogram, plot_scatter
+import tkinter as tk
+from user_interface import CSVEditorGUI
 
 def main():
-    # Đường dẫn tới tệp dữ liệu
-    file_path = "test_Y3wMUE5_7gLdaTN.csv"  
-    data = load_data(file_path)  # Đọc dữ liệu từ tệp
-    if data is None:
-        print("Lỗi: Không thể tiếp tục vì không có dữ liệu hợp lệ.")
-        return  # Thoát nếu không có dữ liệu hợp lệ
+    # file_path = "C:/Users/dinht/OneDrive/Documents/spkt_nam_2/PYTHON/DoAnPython/Do_An_Python/Cruid_clean_Chuanhoa/train_u6lujuX_CVtuZ9i.csv"
+    file_path = "D:/Temp/DoAn/python_doan/train_u6lujuX_CVtuZ9i.csv"
+    root = tk.Tk()
+    app = CSVEditorGUI(root, file_path)
 
-    # Làm sạch dữ liệu
-    data = clean_data(data)  # Loại bỏ trùng lặp
-    #data = fill_missing(data, "LoanAmount", 0)  # Điền giá trị cho ô trống trong cột "LoanAmount"
-
-    # Chuẩn hóa dữ liệu
-    data = normalize_data(data, ["ApplicantIncome", "CoapplicantIncome", "LoanAmount"])  # Chuẩn hóa các cột
-
-    # Trực quan hóa dữ liệu
-    plot_histogram(data, "LoanAmount")  # Vẽ histogram của cột "LoanAmount"
-    plot_scatter(data, "ApplicantIncome", "LoanAmount")  # Vẽ biểu đồ scatter giữa "ApplicantIncome" và "LoanAmount"
-
-    # Lưu lại dữ liệu đã xử lý
-    save_data(data, "processed_data.csv")  # Lưu vào tệp CSV mới
+    root.mainloop()
 
 if __name__ == "__main__":
-    main() 
+    main()
